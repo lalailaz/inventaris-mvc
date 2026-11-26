@@ -1,15 +1,7 @@
 <?php
-/**
- * MODEL - Barang
- *
- * Tanggung jawab model: HANYA berbicara dengan database.
- * Tidak ada HTML dan tidak ada validasi form di sini.
- * Semua query yang memakai input pengguna menggunakan prepared statement.
- */
 
 class Barang
 {
-    // Daftar pilihan tetap. Dipakai oleh form (View) dan validasi (Controller).
     public const KATEGORI = ['Furniture', 'Elektronik', 'ATK', 'Perlengkapan', 'Kebersihan', 'Lainnya'];
     public const KONDISI  = ['Baik', 'Rusak'];
 
@@ -38,8 +30,6 @@ class Barang
     {
         $where  = [];
         $params = [];
-
-        // Pencarian nama dengan LIKE. Tanda % dan _ dari pengguna di-escape
         if ($filter['q'] !== '') {
             $where[]      = 'nama_barang LIKE :q';
             $params[':q'] = '%' . addcslashes($filter['q'], '%_\\') . '%';
@@ -62,7 +52,7 @@ class Barang
             $params[':sampai'] = $filter['tgl_sampai'];
         }
 
-        // Status stok dihitung langsung oleh MySQL memakai CASE WHEN.
+        // Status stok
         $sql = "SELECT *,
                        CASE
                            WHEN jumlah = 0            THEN 'Habis'
@@ -75,7 +65,6 @@ class Barang
             $sql .= ' WHERE ' . implode(' AND ', $where);
         }
 
-        // Aman: potongan ORDER BY berasal dari whitelist, bukan dari pengguna.
         $urut = self::URUTAN[$filter['urut']]['sql'] ?? self::URUTAN['terbaru']['sql'];
         $sql .= ' ORDER BY ' . $urut;
 
@@ -84,7 +73,7 @@ class Barang
         return $stmt->fetchAll();
     }
 
-    // READ - Mengambil satu baris berdasarkan id (untuk mengisi form edit).
+    // READ: Mengambil (untuk mengisi form edit).
     public function cari(int $id): ?array
     {
         $stmt = $this->db->prepare('SELECT * FROM barang WHERE id = :id');

@@ -167,7 +167,6 @@ class BarangController
         $e = [];
 
         // Kode: wajib, maksimal 10 karakter, harus unik.
-        // Karena sudah di-trim, input berisi spasi saja menjadi string kosong.
         if ($d['kode_barang'] === '') {
             $e['kode_barang'] = 'Kode barang wajib diisi.';
         } elseif (mb_strlen($d['kode_barang']) > 10) {
@@ -285,7 +284,7 @@ class BarangController
         ];
     }
 
-    // Token CSRF dibuat sekali per sesi dan disisipkan ke setiap form.
+
     private function tokenCsrf(): string
     {
         if (empty($_SESSION['csrf'])) {

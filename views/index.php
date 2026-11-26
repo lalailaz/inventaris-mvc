@@ -1,15 +1,4 @@
 <?php
-/**
- * VIEW - Halaman utama
- *
- * View hanya bertugas MENAMPILKAN data yang sudah disiapkan Controller.
- * Tidak ada query database di sini. Fungsi e() dipakai di setiap output
- * untuk mencegah XSS, dan ikon() mencetak ikon SVG.
- *
- * Variabel yang tersedia dari Controller:
- *   $daftar, $statistik, $filter, $filterQuery, $form, $editId,
- *   $errors, $flash, $csrf, $kategori, $kondisi, $urutan
- */
 
 $modeEdit = $editId !== null;
 
@@ -40,8 +29,6 @@ $ikonKondisi = ['Baik' => 'check-circle', 'Rusak' => 'wrench'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Inventaris Kelas</title>
-    <!-- Font: Google Sans (isi halaman) dan EB Garamond Bold (judul).
-         Dimuat dari Google Fonts, jadi perlu internet saat pertama kali dibuka. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=EB+Garamond:wght@700&display=swap" rel="stylesheet">
@@ -49,8 +36,7 @@ $ikonKondisi = ['Baik' => 'check-circle', 'Rusak' => 'wrench'];
 </head>
 <body>
 
-<!-- ===================== PESAN BERHASIL / GAGAL =====================
-     Tampil sebagai notifikasi melayang (toast) dan menghilang sendiri lewat CSS. -->
+<!-- ===================== PESAN BERHASIL / GAGAL ===================== -->
 <?php if ($flash): ?>
     <div class="alert toast <?= $flash['tipe'] === 'success' ? 'alert-sukses' : 'alert-bahaya' ?>" role="alert">
         <?= ikon($flash['tipe'] === 'success' ? 'check-circle' : 'alert-octagon') ?>
